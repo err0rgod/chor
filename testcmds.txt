@@ -1,0 +1,2 @@
+pyinstaller --onefile --noconsole --icon=icon.ico yourscript.py
+pyinstaller --onefile --noconsole --icon=icon.ico yourscript.py
