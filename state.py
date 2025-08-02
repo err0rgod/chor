@@ -71,7 +71,7 @@ def decrypt_passes(encrypted_password, key):
         
     except:
         return "[Dedcryption Fauiled]"
-    
+     
 
 
 def extract_passwords_from_profiles():
