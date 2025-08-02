@@ -115,6 +115,8 @@ def send_to_discord(file_path, webhook_url):
 
     if response.status_code == 204:
         print("✅ File sent successfully.")
+    if response.status_code == 200:
+        print("✅ File sent successfully.")
     else:
         print(f"❌ Failed to send: {response.status_code}")
 
