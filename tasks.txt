@@ -1,0 +1,62 @@
+✅ Required Features to Implement (As per document):
+1. Browser Password Stealer (Chrome)
+ Fetch Chrome's Local State file for encryption key
+
+ Open Login Data (SQLite DB)
+
+ Decrypt passwords using AES decryption + Windows CryptUnprotectData
+
+ Show URL, username, and decrypted password
+
+2. Clipboard Data Capture
+ Use pyperclip.paste() to read clipboard
+
+ Store the clipboard content
+
+ Option: Check if it’s non-empty or sensitive-looking (like contains @, .com, card numbers, etc.)
+
+3. System Information Stealer
+ OS Name + Version
+
+ IP Address (Local + Public)
+
+ MAC Address
+
+ Hostname
+
+ Processor Info
+
+ Use requests to fetch public IP from external API (like https://api.ipify.org)
+
+
+
+
+
+
+
+
+
+
+
+
+ 💡 Optional Advanced Features (Enhancements if Time Allows)
+🔹 Keylogger (Basic)
+Log keystrokes using pynput or keyboard module
+
+🔹 Real-time Clipboard Hijacking
+Continuously monitor clipboard using loop + interval
+
+🔹 One-time vs Permanent Clipboard
+One-time: Just fetch once and move on ✅
+
+Permanent: Run a background listener (like a thread) ❌ [Avoid unless we have extra time]
+
+🔹 Remote Exfiltration (Optional)
+Send the stolen data to a remote server or Discord webhook (educational purpose only)
+
+🔹 Persistence (Startup)
+Copy the script to Startup folder to run at boot (Windows)
+
+🔹 Firefox or Edge Password Stealer
+Only if Chrome is completed quickly
+
